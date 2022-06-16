@@ -14,10 +14,17 @@
         android:background="@color/colorLightGray"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp">
-        <ListView
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/messageEditText"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
-            android:id="@+id/lv_listView"/>
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_shadow"
+            android:padding="10dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +36,6 @@
     </LinearLayout>
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageRecyclerView"
         android:layout_width="match_parent"
@@ -37,4 +43,9 @@
         android:layout_above="@+id/linearLayout"
         android:background="@android:color/white"
         android:paddingHorizontal="16dp" />
+
+    <ListView
+        android:id="@+id/lv_listView"
+        android:layout_width="match_parent"
+        android:layout_height="470dp" />
 </RelativeLayout>
