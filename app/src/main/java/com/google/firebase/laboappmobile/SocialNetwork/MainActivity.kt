@@ -11,10 +11,11 @@ import com.firebase.ui.auth.AuthUI.IdpConfig.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.laboappmobile.SocialNetwork.databinding.ActivityMainBinding
 
-import com.google.firebase.database.ktx.database
 
 class MainActivity : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
@@ -51,9 +52,13 @@ class MainActivity : AppCompatActivity(){
         var messageEditText = findViewById(R.id.messageEditText) as TextView
         val user = auth.currentUser
         if (user != null) {
-            db.reference.child("socialUsers").get().addOnSuccessListener {
-                Log.i("firebase", "Got value ${it.value}")
-                messageEditText.setText(it.value.toString())
+
+           db.reference.child("socialUsers").get().addOnSuccessListener {
+
+               Log.i("firebase", "Got value ${it.value}")
+                    messageEditText.setText(it.value.toString())
+
+                //val listUsers: MutableList<SocialUser> = it.value<SocialUser>
             }.addOnFailureListener {
                 Log.e("firebase", "Error getting data", it)
 
