@@ -25,15 +25,13 @@ import androidx.recyclerview.widget.RecyclerView.*
 import com.bumptech.glide.Glide
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.laboappmobile.SocialNetwork.MainActivity.Companion.ANONYMOUS
-import com.google.firebase.laboappmobile.SocialNetwork.databinding.ImageMessageBinding
-import com.google.firebase.laboappmobile.SocialNetwork.databinding.MessageBinding
 import com.google.firebase.laboappmobile.SocialNetwork.model.FriendlyMessage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
 // See: https://github.com/firebase/FirebaseUI-Android
+/*
 class FriendlyMessageAdapter(
     private val options: FirebaseRecyclerOptions<FriendlyMessage>,
     private val currentUserName: String?
@@ -131,3 +129,4 @@ class FriendlyMessageAdapter(
         const val VIEW_TYPE_IMAGE = 2
     }
 }
+*/

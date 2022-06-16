@@ -14,43 +14,21 @@
         android:background="@color/colorLightGray"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp">
-
-        <ImageView
-            android:id="@+id/addMessageImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            ads:srcCompat="@drawable/outline_add_photo_alternate_24" />
-
-        <EditText
-            android:id="@+id/messageEditText"
-            android:layout_width="0dp"
+        <ListView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:background="@drawable/edit_text_shadow"
-            android:hint="Say something..."
-            android:inputType="text" />
-
-        <ImageView
-            android:id="@+id/sendButton"
+            android:id="@+id/lv_listView"/>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:enabled="false"
-            android:src="@drawable/outline_send_gray_24" />
+            android:id="@+id/tv_emptyTextView"
+            android:text="No result"
+            android:textSize="20sp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageRecyclerView"

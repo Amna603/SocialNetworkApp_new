@@ -12,4 +12,15 @@
     <string name="fresh_config">Fresh Config</string>
     <string name="cause_crash">Cause Crash</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+
+
+    <string name="list">Search Bar</string>
+    <string-array name="users_array_test">
+    <item>Alban</item>
+    <item>Bernard</item>
+    <item>Cécile</item>
+    <item>Didier</item>
+    <item>Emile</item>
+    <item>Fabrice</item>
+    </string-array>
 </resources>
