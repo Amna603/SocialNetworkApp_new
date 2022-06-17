@@ -8,20 +8,11 @@
     android:background="@drawable/back_ui"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="160dp"
-        android:layout_height="90dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        android:src="@drawable/login_logo"
-        app:tint="@android:color/white" />
-
     <EditText
         android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_logo"
+        android:layout_centerInParent="true"
         android:layout_marginTop="6dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

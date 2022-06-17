@@ -16,7 +16,6 @@
             android:id="@+id/profile_toolbar"
             android:layout_height="50dp"
             android:layout_width="match_parent"
-            android:layout_marginLeft="6dp"
             android:layout_alignParentStart="true"
             >
 
@@ -28,7 +27,6 @@
                     android:id="@+id/profile_toolbar_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:text="username"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -38,17 +36,12 @@
                     android:layout_centerVertical="true"
                     />
 
-                <ImageView
-                    android:id="@+id/options_view"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/options"
-                    android:layout_marginEnd="2dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    />
+                
+
             </RelativeLayout>
+
         </androidx.appcompat.widget.Toolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -83,8 +76,8 @@
                     android:id="@+id/edit_profile_vertical"
                     android:layout_width="202dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -150,16 +143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/title_following"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Following"
-                                android:textColor="@android:color/black"
-                                android:textSize="12dp" />
-                        </LinearLayout>
+                            android:orientation="vertical"/>
                     </LinearLayout>
 
                 </LinearLayout>

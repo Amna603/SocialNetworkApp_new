@@ -14,7 +14,10 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.laboappmobile.SocialNetwork.Fragments.PostDetailFragment
 import com.google.firebase.laboappmobile.SocialNetwork.Fragments.ProfileFragment
 import com.google.firebase.laboappmobile.SocialNetwork.MainActivity
@@ -39,18 +42,9 @@ class MyPostAdapter(private val mContext: Context, private  val mPost:List<Post>
         val post = mPost[position]
         val postid = post.getPostId()
 
+
         holder.caption.text = post.getCaption()
-
-
-
-
-        holder.caption.setOnClickListener {
-
-            val intent = Intent(mContext, MainActivity::class.java).apply {
-                putExtra("PUBLISHER_ID", post.getPublisher())
-            }
-            mContext.startActivity(intent)
-        }
+        getCountofLikes(post.getPostId(), holder.likes)
 
         holder.caption.setOnClickListener {
             if (holder.caption.tag.toString() == "like") {
@@ -61,6 +55,13 @@ class MyPostAdapter(private val mContext: Context, private  val mPost:List<Post>
                     .removeValue()
             }
 
+            holder.likes.setOnClickListener {
+                val intent = Intent(mContext, ShowUsersActivity::class.java)
+                intent.putExtra("id", post.getPostId())
+                intent.putExtra("title", "likes")
+                mContext.startActivity(intent)
+            }
+
         }
 
 
@@ -68,11 +69,25 @@ class MyPostAdapter(private val mContext: Context, private  val mPost:List<Post>
 
     inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
         var caption: TextView
+        var likes: TextView
 
         init {
+            likes = itemView.findViewById(R.id.likes)
             caption = itemView.findViewById(R.id.caption)
 
         }
     }
 
+    private fun getCountofLikes(postid:String, likesNo: TextView) {
+        val postRef = FirebaseDatabase.getInstance().reference.child("Likes").child(postid)
+        postRef.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+            override fun onDataChange(datasnapshot: DataSnapshot) {
+                likesNo.text = datasnapshot.childrenCount.toString() + " likes"
+            }
+        })
+    }
 }
+

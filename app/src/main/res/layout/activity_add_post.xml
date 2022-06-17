@@ -30,7 +30,7 @@
                     android:layout_alignParentLeft="true"
                     android:background="@android:color/white"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/close" />
+                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                     android:layout_marginEnd="5dp"
                     android:background="@android:color/white"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/save_edited_info" />
+                    android:src="@android:drawable/ic_menu_send" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:maxLines="6"
-            android:hint="Write a Caption"
+            android:hint="Write a Post ! "
 
             />
 
