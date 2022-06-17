@@ -50,17 +50,10 @@ class PostAdapter
         val postid=post.getPostId()
 
         holder.caption.text=post.getCaption()
-        publisherInfo(holder.profileImage,holder.username,holder.publisher,post.getPublisher())
+        publisherInfo(holder.profileImage,holder.username,post.getPublisher())
         isLiked(post.getPostId(),holder.likeButton,holder.caption)
         getCountofLikes(post.getPostId(),holder.likes)
 
-        holder.publisher.setOnClickListener {
-
-            val intent = Intent(mContext, MainActivity::class.java).apply {
-                putExtra("PUBLISHER_ID", post.getPublisher())
-            }
-            mContext.startActivity(intent)
-        }
 
         holder.profileImage.setOnClickListener {
 
@@ -99,14 +92,6 @@ class PostAdapter
 
         }
 
-        holder.publisher.setOnClickListener {
-            val editor=mContext.getSharedPreferences("PREFS",Context.MODE_PRIVATE).edit()
-            editor.putString("profileid",post.getPublisher())
-            editor.apply()
-
-            (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ProfileFragment()).commit()
-        }
 
         holder.likeButton.setOnClickListener{
             if (holder.likeButton.tag.toString()=="like")
@@ -137,7 +122,6 @@ class PostAdapter
         var likeButton:ImageView
         var likes:TextView
         var username:TextView
-        var publisher:TextView
         var caption:TextView
 
 
@@ -146,7 +130,6 @@ class PostAdapter
             likeButton=itemView.findViewById(R.id.post_image_like_btn)
             likes=itemView.findViewById(R.id.likes)
             username=itemView.findViewById(R.id.publisher_user_name_post)
-            publisher=itemView.findViewById(R.id.publisher)
             caption=itemView.findViewById(R.id.caption)
 
         }
@@ -185,7 +168,7 @@ class PostAdapter
     }
 
 
-    private fun publisherInfo(profileImage: CircleImageView, username: TextView, publisher: TextView, publisherID: String) {
+    private fun publisherInfo(profileImage: CircleImageView, username: TextView, publisherID: String) {
 
         val userRef=FirebaseDatabase.getInstance().reference.child("Users").child(publisherID)
         userRef.addValueEventListener(object :ValueEventListener
@@ -198,7 +181,6 @@ class PostAdapter
                     val user = snapshot.getValue<User>(User::class.java)
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profileImage)
                     username.text =(user.getUsername())
-                    publisher.text =(user.getUsername())
                 }
             }
         })
