@@ -2,20 +2,15 @@ package com.google.firebase.laboappmobile.SocialNetwork.Adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 
-import com.google.firebase.laboappmobile.SocialNetwork.Fragments.PostDetailFragment
 import com.google.firebase.laboappmobile.SocialNetwork.Fragments.ProfileFragment
 import com.google.firebase.laboappmobile.SocialNetwork.MainActivity
 import com.google.firebase.laboappmobile.SocialNetwork.model.User
@@ -54,12 +49,10 @@ class PostAdapter
         val post=mPost[position]
         val postid=post.getPostId()
 
-        Picasso.get().load(post.getPostImage()).into(holder.postImage)
         holder.caption.text=post.getCaption()
         publisherInfo(holder.profileImage,holder.username,holder.publisher,post.getPublisher())
-        isLiked(post.getPostId(),holder.likeButton,holder.postImage)
+        isLiked(post.getPostId(),holder.likeButton,holder.caption)
         getCountofLikes(post.getPostId(),holder.likes)
-        getComments(post.getPostId(),holder.comments)
 
         holder.publisher.setOnClickListener {
 
@@ -85,8 +78,16 @@ class PostAdapter
             mContext.startActivity(intent)
         }
 
-        holder.postImage.setOnClickListener {
-            if (holder.postImage.tag.toString() == "like") {
+        holder.caption.setOnClickListener {
+
+            val intent = Intent(mContext, MainActivity::class.java).apply {
+                putExtra("PUBLISHER_ID", post.getPublisher())
+            }
+            mContext.startActivity(intent)
+        }
+
+        holder.caption.setOnClickListener {
+            if (holder.caption.tag.toString() == "like") {
                 FirebaseDatabase.getInstance().reference.child("Likes").child(post.getPostId())
                     .child(firebaseUser!!.uid)
                     .setValue(true)
@@ -98,16 +99,6 @@ class PostAdapter
 
         }
 
-        holder.postImage.setOnClickListener{
-            val editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
-            editor.putString("postid", post.getPostId())
-            editor.apply()
-
-            (mContext as FragmentActivity).supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, PostDetailFragment()).commit()
-        }
-
         holder.publisher.setOnClickListener {
             val editor=mContext.getSharedPreferences("PREFS",Context.MODE_PRIVATE).edit()
             editor.putString("profileid",post.getPublisher())
@@ -117,23 +108,12 @@ class PostAdapter
                 .replace(R.id.fragment_container, ProfileFragment()).commit()
         }
 
-        holder.postImage.setOnClickListener {
-            val editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
-            editor.putString("postId", post.getPostId())
-            editor.apply()
-
-            (mContext as FragmentActivity).supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, PostDetailFragment()).commit()
-        }
-
         holder.likeButton.setOnClickListener{
             if (holder.likeButton.tag.toString()=="like")
             {
                 FirebaseDatabase.getInstance().reference.child("Likes").child(post.getPostId())
                     .child(firebaseUser!!.uid)
                     .setValue(true)
-                pushNotification(post.getPostId(),post.getPublisher())
             }
             else
             {
@@ -143,25 +123,19 @@ class PostAdapter
             }
         }
 
-
-
         holder.likes.setOnClickListener {
             val intent = Intent(mContext, ShowUsersActivity::class.java)
             intent.putExtra("id",post.getPostId())
             intent.putExtra("title","likes")
             mContext.startActivity(intent)
         }
-
-
     }
 
     inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView)
     {
         var profileImage:CircleImageView
-        var postImage:ImageView
         var likeButton:ImageView
         var likes:TextView
-        var comments:TextView
         var username:TextView
         var publisher:TextView
         var caption:TextView
@@ -169,65 +143,30 @@ class PostAdapter
 
         init {
             profileImage=itemView.findViewById(R.id.publisher_profile_image_post)
-            postImage=itemView.findViewById(R.id.post_image_home)
             likeButton=itemView.findViewById(R.id.post_image_like_btn)
             likes=itemView.findViewById(R.id.likes)
-            comments=itemView.findViewById(R.id.comments)
             username=itemView.findViewById(R.id.publisher_user_name_post)
             publisher=itemView.findViewById(R.id.publisher)
             caption=itemView.findViewById(R.id.caption)
 
         }
-
     }
 
-    private fun getComments(postid:String, comment:TextView) {
-
-        val commentRef=FirebaseDatabase.getInstance().reference.child("Comment").child(postid)
-
-        commentRef.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-            override fun onDataChange(datasnapshot: DataSnapshot) {
-                comment.text = "View all "+datasnapshot.childrenCount.toString()+" comments"
-            }
-        })
-    }
-
-    private fun pushNotification(postid:String, userid:String) {
-
-        val ref = FirebaseDatabase.getInstance().reference.child("Notification").child(userid)
-
-        val notifyMap = HashMap<String, Any>()
-        notifyMap["userid"] = FirebaseAuth.getInstance().currentUser!!.uid
-        notifyMap["text"] = "♥liked your post♥"
-        notifyMap["postid"] = postid
-        notifyMap["ispost"] = true
-
-        ref.push().setValue(notifyMap)
-    }
-
-
-    private fun isLiked(postid:String,imageView: ImageView,postedImg:ImageView) {
+    private fun isLiked(postid: String, imageView: ImageView, caption: TextView) {
 
         firebaseUser=FirebaseAuth.getInstance().currentUser
         val postRef=FirebaseDatabase.getInstance().reference.child("Likes").child(postid)
 
         postRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
-
             }
-
             override fun onDataChange(datasnapshot: DataSnapshot) {
                 if (datasnapshot.child(firebaseUser!!.uid).exists()) {
                     imageView.setImageResource(R.drawable.heart_clicked)
-                    postedImg.tag =" liked"
                     imageView.tag = "liked"
                 }
                 else {
                     imageView.setImageResource(R.drawable.heart_not_clicked)
-                    postedImg.tag = "like"
                     imageView.tag = "like"
                 }
             }
@@ -235,42 +174,16 @@ class PostAdapter
     }
 
     private fun getCountofLikes(postid:String,likesNo: TextView) {
-
         val postRef=FirebaseDatabase.getInstance().reference.child("Likes").child(postid)
-
         postRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
-
             override fun onDataChange(datasnapshot: DataSnapshot) {
                 likesNo.text = datasnapshot.childrenCount.toString()+" likes"
             }
         })
     }
 
-    private fun isSaved(postid:String,imageView: ImageView) {
-
-        val savesRef= FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser!!.uid)
-
-        savesRef.addValueEventListener(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                if(snapshot.child(postid).exists()){
-                    imageView.setImageResource(R.drawable.saved_post_filled)
-                    imageView.tag="Saved"
-                }
-                else
-                {
-                    imageView.setImageResource(R.drawable.save_post_unfilled)
-                    imageView.tag="Save"
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
-    }
 
     private fun publisherInfo(profileImage: CircleImageView, username: TextView, publisher: TextView, publisherID: String) {
 
@@ -286,11 +199,8 @@ class PostAdapter
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profileImage)
                     username.text =(user.getUsername())
                     publisher.text =(user.getUsername())
-
                 }
             }
-
         })
     }
-
 }

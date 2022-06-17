@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
 //import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_account_settings.*
 
@@ -144,17 +145,18 @@ class AccountSettings : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        /*if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE ) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE ) {
             if (resultCode == Activity.RESULT_OK) {
                 val result = CropImage.getActivityResult(data)
                 if (data != null){
                     imageUri= result.uri
                     accountSettings_image_profile.setImageURI(imageUri)
                 }
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                val error = result.error
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                //val error = result.error
+                "error"
             }
-        }*/
+        }
     }
 
     private fun updateUserInfoOnly() {
@@ -199,7 +201,6 @@ class AccountSettings : AppCompatActivity() {
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(accountSettings_image_profile)
                     accountSettings_fullname_profile?.setText(user.getFullname())
                     accountSettings_username_profile?.setText(user.getUsername())
-                    accountSettings_bio_profile?.setText(user.getBio())
 
                 }
             }

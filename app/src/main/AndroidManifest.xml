@@ -14,12 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity
-            android:name=".SplashScreenActivity"
-            android:theme="@style/SpashScreenTheme">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,8 +25,7 @@
         android:exported="false" />
 
     <activity android:name=".AddPostActivity" />
-    <activity android:name=".LoginActivity">
-    </activity>
+
     <activity android:name=".SignUpActivity" />
     <activity android:name=".AccountSettings" />
     <activity
@@ -57,4 +53,6 @@
 
     </application>-->
     </application>
+    android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+    android:theme="@style/Base.Theme.AppCompat" />
 </manifest>

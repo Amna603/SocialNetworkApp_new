@@ -16,10 +16,6 @@
         android:icon="@drawable/add"
         android:title="Post" />
 
-    <item
-        android:id="@+id/nav_notifications"
-        android:icon="@drawable/heart"
-        android:title="@string/title_notifications" />
 
     <item
         android:id="@+id/nav_profile"

@@ -3,18 +3,16 @@ package com.google.firebase.laboappmobile.SocialNetwork.model
 class User {
     private  var username:String=""
     private  var uid:String=""
-    private  var bio:String=""
     private  var fullname:String=""
     private  var image:String=""
 
     constructor()
 
-    constructor(username:String,fullname:String,bio:String,uid:String,image:String)
+    constructor(username:String,fullname:String,uid:String,image:String)
     {
         this.username=username
         this.uid=uid
         this.fullname=fullname
-        this.bio=bio
         this.image=image
     }
 
@@ -40,12 +38,6 @@ class User {
         this.fullname=fullname
     }
 
-    fun getBio():String{
-        return bio
-    }
-    fun setBio(bio:String){
-        this.bio= bio
-    }
 
     fun getImage():String{
         return image

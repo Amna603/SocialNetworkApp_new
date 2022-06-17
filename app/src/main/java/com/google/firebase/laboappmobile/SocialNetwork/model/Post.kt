@@ -2,15 +2,13 @@ package com.google.firebase.laboappmobile.SocialNetwork.model
 
 class Post {
     private var postid:String=""
-    private var postimage:String=""
     private var publisher:String=""
     private var caption:String=""
 
     constructor()
 
-    constructor(postid: String, postimage: String, publisher: String, caption: String) {
+    constructor(postid: String, publisher: String, caption: String) {
         this.postid = postid
-        this.postimage = postimage
         this.publisher = publisher
         this.caption = caption
     }
@@ -20,9 +18,6 @@ class Post {
         return postid
     }
 
-    fun getPostImage():String{
-        return postimage
-    }
     fun getPublisher():String{
         return publisher
     }
@@ -36,10 +31,6 @@ class Post {
         this.postid=postid
     }
 
-    fun setPostImage(postimage: String)
-    {
-        this.postimage=postimage
-    }
 
     fun setPublisher(publisher: String)
     {

@@ -40,11 +40,6 @@ class ProfileFragment: Fragment() {
     var myPostAdapter:MyPostAdapter?=null
 
 
-    var postListSaved:List<Post>?=null
-    var myImagesAdapterSavedImg:MyPostAdapter?=null
-    var mySavedImg:List<String>?=null
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,23 +55,10 @@ class ProfileFragment: Fragment() {
             this.profileId = pref.getString("profileId", "none")!!
         }
 
-        if (profileId == firebaseUser.uid) {
-            view.edit_profile_Button.text = "Edit Profile"
-        } else if (profileId != firebaseUser.uid) {
-            checkFollowOrFollowingButtonStatus()
-        }
-        //to call account profile setting activity
-        view.edit_profile_Button.setOnClickListener {
-            val getButtontext = view.edit_profile_Button.text.toString()
-            when {
-                getButtontext == "Edit Profile" -> startActivity(
-                    Intent(
-                        context,
-                        AccountSettings::class.java
-                    )
-                )
 
-                getButtontext == "Follow" -> {
+
+
+
 
                     firebaseUser.uid.let { it1 ->
                         FirebaseDatabase.getInstance().reference
@@ -92,10 +74,8 @@ class ProfileFragment: Fragment() {
                             .child("Follow").child(profileId)
                             .child("Followers").child(it1.toString())
                             .setValue(true)
-                    }
-                }
 
-                getButtontext == "Following" -> {
+
 
                     firebaseUser.uid.let { it1 ->
                         FirebaseDatabase.getInstance().reference
@@ -111,19 +91,13 @@ class ProfileFragment: Fragment() {
                             .removeValue()
                     }
                 }
-            }
-        }
+
+
 
         view.total_followers.setOnClickListener {
             val intent = Intent(context, ShowUsersActivity::class.java)
             intent.putExtra("id",profileId)
             intent.putExtra("title","followers")
-            startActivity(intent)
-        }
-        view.total_following.setOnClickListener {
-            val intent = Intent(context, ShowUsersActivity::class.java)
-            intent.putExtra("id",profileId)
-            intent.putExtra("title","following")
             startActivity(intent)
         }
         //to get own feeds
@@ -142,121 +116,35 @@ class ProfileFragment: Fragment() {
         val linearLayoutManager2:LinearLayoutManager=GridLayoutManager(context,3)
         recyclerViewSavedImages.layoutManager=linearLayoutManager2
 
-        postListSaved=ArrayList()
-        myImagesAdapterSavedImg=context?.let { MyPostAdapter( it,postListSaved as ArrayList<Post>) }
-        recyclerViewSavedImages.adapter=myImagesAdapterSavedImg
+
 
         //Default
         recyclerViewSavedImages.visibility=View.GONE
         recyclerView.visibility=View.VISIBLE
 
-        //To view savedimages button function
-        val uploadedImagesBtn: ImageButton
-        uploadedImagesBtn=view.findViewById(R.id.postGrid)
-        uploadedImagesBtn.setOnClickListener{
-            recyclerViewSavedImages.visibility=View.GONE
-            recyclerView.visibility=View.VISIBLE
-        }
 
-
-        //To view uploadedimages button function
-        val savedImagesBtn: ImageButton
-        savedImagesBtn=view.findViewById(R.id.images_save_btn)
-        savedImagesBtn.setOnClickListener{
-            recyclerViewSavedImages.visibility=View.VISIBLE
-            recyclerView.visibility=View.GONE
-        }
 
         //to fill in data in profile page
         getFollowers()
-        getFollowing()
         getNoofPosts()
         getUserInfo(view)
         myPosts()
-        mySaves()
 
         return view
     }
 
-    private fun mySaves() {
 
-        mySavedImg=ArrayList()
-        val savesRef=FirebaseDatabase.getInstance().reference.child("Saves").child(firebaseUser.uid)
-        savesRef.addValueEventListener(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    for(pO in snapshot.children)
-                    {
-                        ( mySavedImg as ArrayList<String>).add(pO.key!!)
-                    }
 
-                    readSavedImagesData()//Following is thr function to get the details of the saved posts
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
 
-            }
-        })
-
-    }
-
-    private fun readSavedImagesData() {
-
-        val PostsRef=FirebaseDatabase.getInstance().reference.child("Posts")
-        PostsRef.addValueEventListener(object:ValueEventListener{
-            override fun onDataChange(datasnapshot: DataSnapshot) {
-                if(datasnapshot.exists())
-                {
-                    (postListSaved as ArrayList<Post>).clear()
-
-                    for(snapshot in datasnapshot.children)
-                    {
-                        val post=snapshot.getValue(Post::class.java)
-
-                        for(key in mySavedImg!!)
-                        {
-                            if (post!!.getPostId()==key)
-                            {
-                                (postListSaved as ArrayList<Post>).add(post!!)
-                            }
-                        }
-                    }
-                    myImagesAdapterSavedImg!!.notifyDataSetChanged()
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
-
-    }
-
-    private fun checkFollowOrFollowingButtonStatus() {
+   /* private fun checkFollowOrFollowingButtonStatus() {
 
         val followingRef = firebaseUser.uid.let { it1 ->
             FirebaseDatabase.getInstance().reference
                 .child("Follow").child(it1.toString())
                 .child("Following")
         }
-
-        if (followingRef != null) {
-            followingRef.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    if (p0.child(profileId).exists()) {
-                        view?.edit_profile_Button?.text = "Following"
-                    } else {
-                        view?.edit_profile_Button?.text = "Follow"
-                    }
-                }
-            })
-        }
-    }
+    }*/
 
     private fun getFollowers() {
         val followersRef = FirebaseDatabase.getInstance().reference
@@ -277,24 +165,6 @@ class ProfileFragment: Fragment() {
         })
     }
 
-    private fun getFollowing() {
-        val followingsRef = FirebaseDatabase.getInstance().reference
-            .child("Follow").child(profileId)
-            .child("Following")
-
-        followingsRef.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                if (snapshot.exists()) {
-                    view?.total_following?.text = snapshot.childrenCount.toString()
-                }
-            }
-        })
-    }
 
     private fun getNoofPosts() {
         val postRef = FirebaseDatabase.getInstance().reference.child("Posts")
@@ -372,7 +242,6 @@ class ProfileFragment: Fragment() {
                     view.profile_toolbar_username?.text=user.getUsername()
                     view.fullname_in_profile?.text= user.getFullname()
                     view.username_in_profile?.text= user.getUsername()
-                    view.bio_profile?.text= user.getBio()
 
                 }
             }
