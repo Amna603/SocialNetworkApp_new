@@ -81,7 +81,7 @@ class AddPostActivity : AppCompatActivity() {
             else -> {
                 val progressDialog = ProgressDialog(this)
                 progressDialog.setTitle("Posting")
-                progressDialog.setMessage("Please wait, we are posting..")
+                //progressDialog.setMessage("Please wait, we are posting..")
                 progressDialog.show()
 
                 val fileRef = storagePostPictureRef!!.child(System.currentTimeMillis().toString()+ ".jpg")
@@ -118,7 +118,12 @@ class AddPostActivity : AppCompatActivity() {
 
                         ref.child(postid).updateChildren(postMap)
 
+                        val commentRef=FirebaseDatabase.getInstance().reference.child("Comment").child(postid)
+                        val commentMap = HashMap<String, Any>()
+                        commentMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
+                        commentMap["comment"] =  write_post.text.toString()
 
+                        commentRef.push().setValue(commentMap)
 
 
                         Toast.makeText(this, "Uploaded successfully", Toast.LENGTH_LONG).show()

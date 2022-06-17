@@ -3,11 +3,15 @@ package com.google.firebase.laboappmobile.SocialNetwork.Fragments
 import android.R.attr.spacing
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,10 +28,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -44,6 +52,9 @@ class ProfileFragment: Fragment() {
     var myImagesAdapterSavedImg:MyPostAdapter?=null
     var mySavedImg:List<String>?=null
 
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageReference: StorageReference
+
 
 
     override fun onCreateView(
@@ -54,7 +65,8 @@ class ProfileFragment: Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
-
+        storage = FirebaseStorage.getInstance()
+        storageReference = storage.reference
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
         if (pref != null) {
             this.profileId = pref.getString("profileId", "none")!!
@@ -368,15 +380,51 @@ class ProfileFragment: Fragment() {
 
                 if (snapshot.exists()) {
                     val user = snapshot.getValue<User>(User::class.java)
-                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(view.profile_image_profile)
-                    view.profile_toolbar_username?.text=user.getUsername()
-                    view.fullname_in_profile?.text= user.getFullname()
-                    view.username_in_profile?.text= user.getUsername()
-                    view.bio_profile?.text= user.getBio()
-
+                    //Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(view.profile_image_profile)
+                    if (user != null) {
+                        loadPic(user.getFullname(),view.profile_image_profile)
+                        view.profile_toolbar_username?.text=user.getUsername()
+                        view.fullname_in_profile?.text= user.getFullname()
+                        view.username_in_profile?.text= user.getUsername()
+                        view.bio_profile?.text= user.getBio()
+                    }
                 }
             }
         })
+    }
+
+    private fun loadPic(user: String, picImage: ImageView) {
+        try {
+            val maxDownloadSize = 10L * 1024 * 1024
+            storageReference.child("$user/profilePic.jpg").getBytes(maxDownloadSize).addOnCompleteListener {
+                val bitmap = BitmapFactory.decodeByteArray(it.result, 0, it.result.size)
+                updatePic(bitmap, picImage)
+            }
+        } catch (e: Exception) {
+            Log.d("test"," $e")
+            return
+        }
+
+
+    }
+
+    private fun updatePic(bitmap: Bitmap, picImage: ImageView) {
+        val imageHeight = bitmap.height
+        val imageWidth = bitmap.width
+        val proportion: Double
+        val metrics = resources.displayMetrics
+        val dpi = metrics.densityDpi
+        val pixels = 238 * (dpi / 160)
+
+        if (imageHeight < imageWidth) {
+            proportion = imageWidth.toDouble() / pixels.toDouble()
+            val newHeight = imageHeight / proportion.roundToInt()
+            picImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, pixels, newHeight, false))
+        } else {
+            proportion = imageHeight.toDouble() / pixels.toDouble()
+            val newWidth = (imageWidth / proportion).roundToInt()
+            picImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, newWidth, pixels, false))
+        }
     }
 
     override fun onStop() {
