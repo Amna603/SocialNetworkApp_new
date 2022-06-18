@@ -47,19 +47,6 @@ class HomeFragment : Fragment() {
         recyclerView.adapter=postAdapter
 
 
-
-        val linearlayoutManager2=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-
-
-        //code for counting no of items in recycler view
-//         if (postAdapter!!.itemCount == 0){
-//             welcome_text.text = "Welcome to Instagram"
-//         }
-//         else
-//         {
-//             welcome_text.visibility=View.INVISIBLE
-//         }
-
         checkFollowings()
 
         return view

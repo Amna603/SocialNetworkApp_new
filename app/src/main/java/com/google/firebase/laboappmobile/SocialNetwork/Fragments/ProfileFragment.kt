@@ -1,18 +1,15 @@
 package com.google.firebase.laboappmobile.SocialNetwork.Fragments
 
-import android.R.attr.spacing
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.laboappmobile.SocialNetwork.AccountSettings
 import com.google.firebase.laboappmobile.SocialNetwork.Adapter.MyPostAdapter
 import com.google.firebase.laboappmobile.SocialNetwork.model.Post
 import com.google.firebase.laboappmobile.SocialNetwork.model.User
