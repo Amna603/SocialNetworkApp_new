@@ -7,9 +7,18 @@
     android:background="@drawable/back_ui"
     tools:context=".SignUpActivity">
 
+    <TextView
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:text="ECAM-Network"
+        android:textColor="@android:color/white"
+        android:textSize="35dp" />
     <EditText
         android:id="@+id/signup_fullname"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="6dp"
@@ -23,10 +32,11 @@
 
     <EditText
         android:id="@+id/signup_username"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_below="@id/signup_fullname"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:padding="10dp"
@@ -37,10 +47,11 @@
 
     <EditText
         android:id="@+id/signup_email"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_below="@id/signup_username"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:padding="10dp"
@@ -51,10 +62,11 @@
 
     <EditText
         android:id="@+id/signup_password"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_below="@id/signup_email"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:padding="10dp"
@@ -70,6 +82,7 @@
         android:layout_centerHorizontal="true"
         android:text="Sign Up"
         android:textAllCaps="false"
+        android:layout_marginTop="10dp"
         android:textSize="15sp"
         android:textColor="@android:color/black"
         android:textStyle="normal"
@@ -82,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/signup_btn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:text="Already have an account? Login"
         android:textAllCaps="false"
         android:textColor="@android:color/white"

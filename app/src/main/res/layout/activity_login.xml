@@ -8,26 +8,37 @@
     android:background="@drawable/back_ui"
     tools:context=".LoginActivity">
 
+    <TextView
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:text="ECAM-Network"
+        android:textColor="@android:color/white"
+        android:textSize="35dp" />
+
     <EditText
         android:id="@+id/login_email"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="6dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
-        android:padding="10dp"
+        android:background="@drawable/inputs_background"
         android:hint="Email"
         android:inputType="text"
-        android:textSize="18sp"
-        android:background="@drawable/inputs_background"/>
+        android:padding="10dp"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/login_password"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_below="@id/login_email"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:padding="10dp"
@@ -40,14 +51,14 @@
         android:id="@+id/login_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/login_password"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:text="Login"
         android:textAllCaps="false"
-        android:textSize="15sp"
         android:textColor="@android:color/black"
-        android:textStyle="normal"
-        android:layout_below="@id/login_password"
-        />
+        android:textSize="15sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/signup_link"
@@ -55,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_btn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="20dp"
         android:text="Don't have an account? Sign Up"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
